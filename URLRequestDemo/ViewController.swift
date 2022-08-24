@@ -19,9 +19,12 @@ struct ScanTicketError: Codable {
 }
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    private func fetchData() {
         let params = ["tsn" : 123452]
         let url = URL(string: "http://der.mocklab.io/v1/ticket/scan")
         var request = URLRequest(url: url!)
@@ -36,11 +39,13 @@ class ViewController: UIViewController {
                 print("error recievd \(error)")
             }
             
-            if let data = data {
-                let result = try? JSONDecoder().decode(ScanTicketErrorResult.self, from: data)
+            if let data = data, let result = try? JSONDecoder().decode(ScanTicketErrorResult.self, from: data) {
                 print("data received", result)
             }
-            print(response)
+            
+            if let response = response {
+                print(response)
+            }
         }.resume()
     }
 }
